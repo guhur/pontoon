@@ -2,6 +2,7 @@ FROM python:3.9-bullseye AS server
 
 ARG USER_ID=1000
 ARG GROUP_ID=1000
+ARG ENV_FILE=./.env
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV HGPYTHON3=1
@@ -46,7 +47,7 @@ ENV TERSER_BINARY /app/node_modules/.bin/terser
 COPY --chown=pontoon:pontoon pontoon/package.json .
 RUN npm install
 
-COPY --chown=pontoon:pontoon ./docker/config/server.env .env
+COPY --chown=pontoon:pontoon ${ENV_FILE} .env
 COPY --chown=pontoon:pontoon . /app/
 
 RUN python manage.py collectstatic
